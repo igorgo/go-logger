@@ -219,3 +219,5 @@ class GoLogger {
     ))
   }
 }
+
+module.exports = GoLogger
