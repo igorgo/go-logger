@@ -133,7 +133,7 @@ class GoLogger {
     })
 
     this._openFile = async (aFileType, aOnOpen, aOnError) => {
-      const makeTimer = fileType => () => log.flush(fileType)
+      const makeTimer = fileType => () => this._flush(fileType)
       const date = nowDate()
       const fileName = path.join(this._dir, date + '-' + aFileType + '.log')
       await this._closeFile(aFileType)
