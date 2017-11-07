@@ -1,0 +1,34 @@
+{
+  "name": "go-logger",
+  "version": "1.0.0",
+  "description": "Daily logs writer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/igorgo/go-logger.git"
+  },
+  "keywords": [
+    "log",
+    "logfile",
+    "write",
+    "daily"
+  ],
+  "author": "Igor Gorodetskyy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/igorgo/go-logger/issues"
+  },
+  "homepage": "https://github.com/igorgo/go-logger#readme",
+  "dependencies": {
+    "concolor": "^0.1.5",
+    "go-duration": "^1.0.0",
+    "go-normal-stack": "^1.0.0",
+    "is-obj": "^1.0.1",
+    "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
+    "stringify-object": "^3.2.1"
+  }
+}
