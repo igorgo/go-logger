@@ -32,7 +32,6 @@ function nowDate (aDate) {
 class GoLogger {
   constructor ({
                  fileTypes = ['error', 'debug', 'warning'],
-                 stdOut = ['error', 'debug', 'warning'],
                  dir = path.join(process.cwd(), 'log'),
                  useLocalTime = true,
                  pid = true,
