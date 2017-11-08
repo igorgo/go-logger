@@ -30,31 +30,18 @@ function nowDate (aDate) {
 }
 
 class GoLogger {
-  constructor ({
-                 fileTypes = ['error', 'debug', 'warning'],
-                 dir = path.join(process.cwd(), 'log'),
-                 useLocalTime = true,
-                 pid = true,
-                 stdOut = [],
-                 writeInterval = '3s',
-                 bufferSizeKB = 64,
-                 keepDays = 30,
-                 delEmpty = false
-               }) {
+  constructor () {
     this._active = false
-    this._fileTypes = fileTypes
+    this._fileTypes = ['error', 'debug', 'warning']
     this._files = new Map()
-    this._useLocalTime = useLocalTime
-    this._pid = pid
-    this._stdOut = ['error', 'debug', 'warning', ...stdOut]
-    this._writeInterval = writeInterval
-    this._bufferSize = bufferSizeKB * 1024
-    this._keepDays = keepDays
-    this._delEmpty = delEmpty
-    if (!this._fileTypes.includes('error')) this._fileTypes.push('error')
-    if (!this._fileTypes.includes('debug')) this._fileTypes.push('debug')
-    if (!this._fileTypes.includes('warning')) this._fileTypes.push('warning')
-    this._dir = dir
+    this._useLocalTime = true
+    this._pid = true
+    this._stdOut = []
+    this._writeInterval = '3s'
+    this._bufferSize = 64
+    this._keepDays = 30
+    this._delEmpty = false
+    this._dir = path.join(process.cwd(), 'log')
 
     this._write = (aFileType, aMessage) => {
       const file = this._files.get(aFileType)
@@ -175,19 +162,41 @@ class GoLogger {
       })
     }
 
-    this._fileTypes.forEach(fileType => {
-      this[fileType] = message => {
-        this._write(fileType, message)
-      }
-    })
-
   }
 
   get active () {
     return this._active
   }
 
-  async open () {
+  async open ({
+                fileTypes = this._fileTypes,
+                dir = this._dir,
+                useLocalTime = this._useLocalTime,
+                pid = this._pid,
+                stdOut = this._stdOut,
+                writeInterval = this._writeInterval,
+                bufferSizeKB = this._bufferSize,
+                keepDays = this._keepDays,
+                delEmpty = this._delEmpty
+              }) {
+
+    this._fileTypes = fileTypes
+    this._useLocalTime = useLocalTime
+    this._pid = pid
+    this._stdOut = ['error', 'debug', 'warning', ...stdOut]
+    this._writeInterval = writeInterval
+    this._bufferSize = bufferSizeKB * 1024
+    this._keepDays = keepDays
+    this._delEmpty = delEmpty
+    if (!this._fileTypes.includes('error')) this._fileTypes.push('error')
+    if (!this._fileTypes.includes('debug')) this._fileTypes.push('debug')
+    if (!this._fileTypes.includes('warning')) this._fileTypes.push('warning')
+    this._dir = dir
+    this._fileTypes.forEach(fileType => {
+      this[fileType] = message => {
+        this._write(fileType, message)
+      }
+    })
     try {
       mkdirp.sync(this._dir)
     }
@@ -220,4 +229,4 @@ class GoLogger {
   }
 }
 
-module.exports = GoLogger
+module.exports = new GoLogger()
