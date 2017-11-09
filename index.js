@@ -60,9 +60,10 @@ class GoLogger {
         msg = msg.substring(0, msg.length - 1)
         if (aFileType === 'debug') {
           msg = colorDebug(normalStack((new Error(msg)))).split(';')
-          _.remove(msg, (v) => v.startsWith(' Object.afs.log.'))
+          // _.remove(msg, (v) => v.startsWith(' Object.afs.log.'))
           msg[0] = msg[0].slice(16)
-          msg = msg.join('\n')
+          // msg = msg.join('\n')
+          msg = msg[0] + '\n' + msg[3]
         }
         else msg = msg.replace(SEMICOLON_REGEXP, '\n ')
 
@@ -161,7 +162,6 @@ class GoLogger {
         }
       })
     }
-
   }
 
   get active () {
