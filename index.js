@@ -62,8 +62,10 @@ class GoLogger {
           msg = colorDebug(normalStack((new Error(msg)))).split(';')
           // _.remove(msg, (v) => v.startsWith(' Object.afs.log.'))
           msg[0] = msg[0].slice(16)
-          // msg = msg.join('\n')
-          msg = msg[0] + '\n' + msg[3]
+          const firstStackLine = msg.findIndex(s => s.startsWith(' GoLogger._write'))
+          msg = msg.slice(0,firstStackLine+3)
+          msg.splice(firstStackLine,2)
+          msg = msg.join('\n')
         }
         else msg = msg.replace(SEMICOLON_REGEXP, '\n ')
 
