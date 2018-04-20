@@ -50,7 +50,7 @@ class GoLogger {
       const file = this._files.get(aFileType)
       if (!file) return
       if (aMessage instanceof Error) {
-        aMessage = normalStack(aMessage)
+        aMessage = aMessage + '\n  ' + normalStack(aMessage)
       }
       else if (Array.isArray(aMessage) || isObj(aMessage)) {
         aMessage = stringifyObject(aMessage)
