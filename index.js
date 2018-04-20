@@ -41,6 +41,7 @@ class GoLogger {
     this._bufferSize = 64
     this._keepDays = 30
     this._delEmpty = false
+    this._hideLinesDebug = 0
     this._dir = path.join(process.cwd(), 'log')
 
     this._write = (aFileType, aMessage) => {
@@ -62,7 +63,7 @@ class GoLogger {
           msg = colorDebug(normalStack((new Error(msg)))).split(';')
           // _.remove(msg, (v) => v.startsWith(' Object.afs.log.'))
           msg[0] = msg[0].slice(16)
-          const firstStackLine = msg.findIndex(s => s.startsWith(' GoLogger._write'))
+          const firstStackLine = msg.findIndex(s => s.startsWith(' GoLogger._write')) + this._hideLinesDebug
           msg = msg.slice(0,firstStackLine+3)
           msg.splice(firstStackLine,2)
           msg = msg.join('\n')
@@ -179,7 +180,8 @@ class GoLogger {
                 writeInterval = this._writeInterval,
                 bufferSizeKB = this._bufferSize,
                 keepDays = this._keepDays,
-                delEmpty = this._delEmpty
+                delEmpty = this._delEmpty,
+                hideLinesDebug = this._hideLinesDebug
               }) {
 
     this._fileTypes = fileTypes
@@ -190,6 +192,7 @@ class GoLogger {
     this._bufferSize = bufferSizeKB * 1024
     this._keepDays = keepDays
     this._delEmpty = delEmpty
+    this._hideLinesDebug = hideLinesDebug
     if (!this._fileTypes.includes('error')) this._fileTypes.push('error')
     if (!this._fileTypes.includes('debug')) this._fileTypes.push('debug')
     if (!this._fileTypes.includes('warning')) this._fileTypes.push('warning')
