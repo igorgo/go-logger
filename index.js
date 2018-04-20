@@ -17,9 +17,11 @@ const colorDebug = concolor('b,green')
 const colorWarn = concolor('b,yellow')
 const SEMICOLON_REGEXP = /;/g
 const DAY_MILLISECONDS = gDur('1d')
+
 function pad2 (aNumber) {
   return aNumber < 10 ? '0' + aNumber : '' + aNumber
 }
+
 function nowDate (aDate) {
   if (!aDate) aDate = new Date()
   return (
@@ -64,8 +66,8 @@ class GoLogger {
           // _.remove(msg, (v) => v.startsWith(' Object.afs.log.'))
           msg[0] = msg[0].slice(16)
           const firstStackLine = msg.findIndex(s => s.startsWith(' GoLogger._write')) + this._hideLinesDebug
-          msg = msg.slice(0,firstStackLine+3)
-          msg.splice(firstStackLine,2)
+          msg = msg.slice(0, firstStackLine + 3)
+          msg.splice(firstStackLine - this._hideLinesDebug, this._hideLinesDebug + 2)
           msg = msg.join('\n')
         }
         else msg = msg.replace(SEMICOLON_REGEXP, '\n ')
@@ -160,7 +162,8 @@ class GoLogger {
           fileTime = new Date(fileList[i].substring(0, 10)).getTime()
           fileAge = Math.floor((time - fileTime) / DAY_MILLISECONDS)
           if (fileAge > 1 && fileAge > this._keepDays) {
-            fs.unlink(path.join(this._dir, fileList[i]), () => {})
+            fs.unlink(path.join(this._dir, fileList[i]), () => {
+            })
           }
         }
       })
@@ -229,7 +232,9 @@ class GoLogger {
     this._active = false
     await Promise.all(_.map(
       this._fileTypes,
-      async fileType => { await this._closeFile(fileType) }
+      async fileType => {
+        await this._closeFile(fileType)
+      }
     ))
   }
 }
